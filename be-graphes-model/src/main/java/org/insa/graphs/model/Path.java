@@ -35,7 +35,7 @@ public class Path {
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+        
         return new Path(graph, arcs);
     }
 
@@ -197,12 +197,33 @@ public class Path {
      * </ul>
      * 
      * @return true if the path is valid, false otherwise.
-     * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+    	boolean IsPathValid = false;
+    	 List<Arc> arcs = new ArrayList<Arc>();
+         arcs = getArcs();
+        if(isEmpty())
+        {
+        	IsPathValid = true;
+        }
+        else if(arcs.isEmpty() && this.origin != null)
+        {
+        	IsPathValid = true;
+        }
+        else if(this.origin != null)
+        {
+        	Node lastNode = this.origin;
+        	IsPathValid = true;
+        	for (Arc ArcToTest : arcs) 
+            {
+                if(ArcToTest.getOrigin() != lastNode)
+                {
+                	IsPathValid = false;
+                }
+                lastNode = ArcToTest.getDestination();
+            }
+        }
+        return IsPathValid;
     }
 
     /**
@@ -210,11 +231,17 @@ public class Path {
      * 
      * @return Total length of the path (in meters).
      * 
-     * @deprecated Need to be implemented.
+     * 
      */
     public float getLength() {
-        // TODO:
-        return 0;
+        float lengthPath = 0; 
+        List<Arc> arcs = new ArrayList<Arc>();
+        arcs = getArcs();
+        for (Arc ArcToMeasure : arcs) 
+        {
+            lengthPath = (lengthPath + ArcToMeasure.getLength());
+        }
+        return lengthPath;
     }
 
     /**
@@ -225,11 +252,16 @@ public class Path {
      * @return Time (in seconds) required to travel this path at the given speed (in
      *         kilometers-per-hour).
      * 
-     * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        // TODO:
-        return 0;
+    	double TravelTimePath = 0; 
+        List<Arc> arcs = new ArrayList<Arc>();
+        arcs = getArcs();
+        for (Arc ArcToMeasure : arcs) 
+        {
+        	TravelTimePath = (TravelTimePath + ArcToMeasure.getTravelTime(speed));
+        }
+        return TravelTimePath;
     }
 
     /**
@@ -238,11 +270,16 @@ public class Path {
      * 
      * @return Minimum travel time to travel this path (in seconds).
      * 
-     * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+    	double MiniTravelTimePath = 0; 
+        List<Arc> arcs = new ArrayList<Arc>();
+        arcs = getArcs();
+        for (Arc ArcToMeasure : arcs) 
+        {
+        	MiniTravelTimePath = (MiniTravelTimePath + ArcToMeasure.getMinimumTravelTime());
+        }
+        return MiniTravelTimePath;
     }
 
 }
