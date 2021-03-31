@@ -34,10 +34,39 @@ public class Path {
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
-        List<Arc> arcs = new ArrayList<Arc>();
-        
+    	List<Arc> arcs = new ArrayList<Arc>();
+        if (nodes.size() == 1) {
+            return new Path(graph, nodes.get(0));
+        }
+        int i = 0;
+        for (Node node : nodes) {
+        	if (i == nodes.size() - 1) break;
+        	double TempMin = Double.MAX_VALUE;
+        	Arc arcMin = null;
+            for(Arc arcToTest : node.getSuccessors()) 
+            {
+            	
+                if (arcToTest.getDestination() == nodes.get(i + 1)) 
+                {
+                	
+                    double Temp = arcToTest.getMinimumTravelTime();
+                    
+                    if (Temp <= TempMin) 
+                    {
+                    	
+                    	TempMin = Temp;
+                    	arcMin = arcToTest;
+                    	
+                    }
+                }
+            }
+            if (arcMin == null) throw new IllegalArgumentException();
+            i += 1;
+            arcs.add(arcMin);
+        }  
         return new Path(graph, arcs);
-    }
+      }
+        
 
     /**
      * Create a new path that goes through the given list of nodes (in order),
@@ -56,9 +85,42 @@ public class Path {
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+        if (nodes.size() == 1) {
+            return new Path(graph, nodes.get(0));
+        }
+        int i = 0;
+        for (Node node : nodes) {
+        	if (i == nodes.size() - 1) break;
+        	float distanceMin = Float.MAX_VALUE;
+        	Arc arcMin = null;
+            for(Arc arcToTest : node.getSuccessors()) 
+            {
+            	
+                if (arcToTest.getDestination() == nodes.get(i + 1)) 
+                {
+                	
+                    float Distance = arcToTest.getLength();
+                    
+                    if (Distance <= distanceMin) 
+                    {
+                    	
+                    	distanceMin = Distance;
+                    	arcMin = arcToTest;
+                    	
+                    }
+                }
+            }
+            if (arcMin == null) throw new IllegalArgumentException();
+            i += 1;
+            arcs.add(arcMin);
+        }  
         return new Path(graph, arcs);
-    }
+      }
+        
+        
+        // TODO:
+        
+    
 
     /**
      * Concatenate the given paths.
