@@ -154,21 +154,17 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     			this.arraySet(IndexToReplace, this.array.get(i));
     			this.arraySet(i, null);
     			this.currentSize -= 1;
+    			/*--------------------------------------------------------------------------------*/
+        		/*On remet en ordre le tas*/
     			percolateDown(IndexToReplace);
     			
     		}
     		else throw new ElementNotFoundException(x);
-    		/*-----------------------------------------------------------------------------------*/
-    		/*On remet en ordre le tas*/
-    		
-
-	        
-
-    		
     		
     	}else throw new ElementNotFoundException(x);
         	
     }
+    
 
     @Override
     public E findMin() throws EmptyPriorityQueueException {
