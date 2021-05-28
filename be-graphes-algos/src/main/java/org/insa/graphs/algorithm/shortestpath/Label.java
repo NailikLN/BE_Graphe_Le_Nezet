@@ -56,15 +56,20 @@ public class Label implements Comparable<Label>{
 		return this.fatherArc;
 	}
 
+	public float getCostTot()
+	{
+		return this.cout;
+	}
+	
 	@Override
 	public int compareTo(Label o) 
 	{
 		int result;
-		if(this.getCost() < o.getCost())
+		if(this.getCostTot() < o.getCostTot())
 		{
 			result = -1;
 		}
-		else if(this.getCost() > o.getCost())
+		else if(this.getCostTot() > o.getCostTot())
 		{
 			result = 1;
 		}

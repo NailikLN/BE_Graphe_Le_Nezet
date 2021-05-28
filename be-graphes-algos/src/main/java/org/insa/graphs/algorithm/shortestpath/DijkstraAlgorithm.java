@@ -1,12 +1,13 @@
 package org.insa.graphs.algorithm.shortestpath;
 
-
-import java.util.*;
-
 import org.insa.graphs.algorithm.AbstractSolution.Status;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
-import org.insa.graphs.model.*;
+import org.insa.graphs.model.Arc;
+import org.insa.graphs.model.Graph;
+import org.insa.graphs.model.Node;
+import org.insa.graphs.model.Path;
 
+import java.util.*;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	
@@ -14,6 +15,12 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
     }
+    
+    public Label createLabel(Node node,ShortestPathData data) {
+        return(new Label(node));
+    }
+    
+    
 
     @Override
     protected ShortestPathSolution doRun() {
@@ -21,7 +28,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         final ShortestPathData data = getInputData();
         ShortestPathSolution solution = null;
         
-        /* initialisation des tableaux et varaiable dont on auras besoin*/
+        /* initialisation des tableaux et variable dont on auras besoin*/
         
     	Graph graph = data.getGraph();
     	Node Origin = data.getOrigin();
@@ -29,13 +36,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     	int SizeGraph = graph.size();
     	
     	Label Labels[] = new Label[SizeGraph];
-
+    	
+    	//first event
     	
     	List<Node> ToTest = graph.getNodes();
     	
     	for(Node node: ToTest)
     	{
-    		Labels[node.getId()] = new Label(node);
+    		Labels[node.getId()] = createLabel(node,data);
     	}
 
     	BinaryHeap<Label> LabelHeap = new BinaryHeap<Label>();
@@ -45,6 +53,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     	
     	Labels[Origin.getId()].setCost(0);
     	LabelHeap.insert(Labels[Origin.getId()]);
+    	 notifyOriginProcessed(Origin);
     	
     	Boolean IsFinished = false;
 
@@ -53,8 +62,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     	{
     		
     		Label CurrentNode = LabelHeap.findMin();
+    		notifyNodeReached(CurrentNode.getNode());
+    		notifyNodeMarked(CurrentNode.getNode());
     		LabelHeap.remove(CurrentNode);
     		CurrentNode.setMark(true);
+    		
     		
     		// on vérifie que on ne se trouve pas a la fin.
     		
@@ -74,13 +86,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                     continue;
                 }
     			
+    			
     			Label SuccNode = Labels[arc.getDestination().getId()];
     			
     			if(!SuccNode.isMarked())
     			{
-    				if(SuccNode.getCost() > (CurrentNode.getCost() + arc.getLength()))
+    				if(SuccNode.getCostTot() > (CurrentNode.getCostTot() + arc.getLength()))
     				{
-    					SuccNode.setCost((CurrentNode.getCost()+arc.getLength()));
+    					SuccNode.setCost((CurrentNode.getCostTot()+arc.getLength()));
     					SuccNode.setFather(CurrentNode.getNode(), arc);
     					LabelHeap.insert(SuccNode);
     					
@@ -100,6 +113,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		} 
 		else 
 		{
+			notifyDestinationReached(Destination);
 			ArrayList<Arc> arcs = new ArrayList<Arc>();
 			Arc ArcFromfather = Labels[Destination.getId()].getFatherArc();
 			while(ArcFromfather != null)
