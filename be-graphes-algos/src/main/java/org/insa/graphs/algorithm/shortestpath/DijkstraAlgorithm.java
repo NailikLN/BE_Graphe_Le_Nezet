@@ -91,9 +91,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     			
     			if(!SuccNode.isMarked())
     			{
-    				if(SuccNode.getCostTot() > (CurrentNode.getCostTot() + arc.getLength()))
+    				if(SuccNode.getCost() > (CurrentNode.getCost() + arc.getLength()))
     				{
-    					SuccNode.setCost((CurrentNode.getCostTot()+arc.getLength()));
+    					SuccNode.setCost((CurrentNode.getCost()+arc.getLength()));
     					SuccNode.setFather(CurrentNode.getNode(), arc);
     					LabelHeap.insert(SuccNode);
     					

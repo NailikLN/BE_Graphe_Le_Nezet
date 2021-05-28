@@ -3,29 +3,29 @@ import org.insa.graphs.model.Node;
 
 public class LabelStar extends Label {
 	
-	private float cost;
+	private float EstimCost;
 	
 	public LabelStar(Node node, float estimation)
 	{
 		super(node);
-		this.cost = estimation;
+		this.EstimCost = estimation;
 	}
 	
 	@Override
 	public float getCostTot()
 	{
 		
-		return (this.cost + this.getCost()) ;
+		return (this.EstimCost + this.getCost()) ;
 	}
 	
 	public float getEstimCost()
 	{
-		return this.cost;
+		return this.EstimCost;
 	}
 	
 	public void setEstimCost(float Cost)
 	{
-		this.cost = Cost;
+		this.EstimCost = Cost;
 	}
 	
 	

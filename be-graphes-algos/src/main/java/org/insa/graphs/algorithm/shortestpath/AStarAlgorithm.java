@@ -13,7 +13,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         if (data.getMode() == Mode.LENGTH){
             return(new LabelStar(node,(float)(Point.distance(node.getPoint(),data.getDestination().getPoint()))));
         } else {
-            return(new LabelStar(node,(float)( Point.distance(node.getPoint(),data.getDestination().getPoint()) / (data.getGraph().getGraphInformation().getMaximumSpeed()/3.6) )));
+        	return(new LabelStar(node,(float)( Point.distance(node.getPoint(),data.getDestination().getPoint()) / (data.getGraph().getGraphInformation().getMaximumSpeed()/3.6) )));
         }
     }
 }
